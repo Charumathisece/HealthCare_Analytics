@@ -5,7 +5,7 @@ pipeline {
         // Your GitHub repository details
         REPO = 'Charumathisece/HealthCare_Analytics'
         TARGET_BRANCH = 'gh-pages'   // Change to 'main' if deploying directly to main
-        GITHUB_CRED = 'github-pat'   // Jenkins credential ID for GitHub token
+        GITHUB_CRED = 'github-pats'   // Jenkins credential ID for GitHub token
     }
 
     stages {
