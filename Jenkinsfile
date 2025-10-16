@@ -19,12 +19,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo '🏗️ Building Healthcare Analytics Website...'
+                // Create a publish folder and copy files
                 sh '''
                     mkdir -p publish
                     cp index.html publish/
                     cp styles.css publish/
                     cp script.js publish/
                 '''
+                sh 'ls -la publish'
             }
         }
 
@@ -40,32 +42,14 @@ pipeline {
                 '''
             }
         }
-
-        stage('Deploy to GitHub Pages') {
-            steps {
-                echo '🚀 Deploying to GitHub Pages...'
-                withCredentials([usernamePassword(credentialsId: env.GITHUB_CRED, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                    sh '''
-                        cd publish
-                        git init
-                        git config user.email "jenkins@example.com"
-                        git config user.name "$GIT_USER"
-                        git add -A
-                        git commit -m "Deploy from Jenkins"
-                        git branch -M main
-                        git push --force "https://${GIT_USER}:${GIT_TOKEN}@github.com/${REPO}.git" main:${TARGET_BRANCH}
-                    '''
-                }
-            }
-        }
     }
 
     post {
         success {
-            echo '✅ Pipeline completed successfully! Your website is deployed.'
+            echo '✅ Pipeline completed successfully! Build & test passed.'
         }
         failure {
-            echo '❌ Pipeline failed! Check Jenkins logs for details.'
+            echo '❌ Pipeline failed! Check console output.'
         }
     }
 }
